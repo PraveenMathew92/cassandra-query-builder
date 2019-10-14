@@ -1,4 +1,4 @@
-package com.example.rentals
+package com.example.cql
 
 import org.junit.Test
 import org.junit.runner.RunWith

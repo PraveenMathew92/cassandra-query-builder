@@ -1,4 +1,4 @@
-package com.example.rentals
+package com.example.cql
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

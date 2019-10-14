@@ -1,6 +1,7 @@
 package com.example.service
 
-import com.example.repository.DatabaseClient
+import com.example.cql.service.QueryService
+import com.example.cql.repository.DatabaseClient
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify

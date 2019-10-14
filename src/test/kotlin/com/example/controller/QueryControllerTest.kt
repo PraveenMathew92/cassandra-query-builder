@@ -1,6 +1,7 @@
 package com.example.controller
 
-import com.example.service.QueryService
+import com.example.cql.controller.QueryController
+import com.example.cql.service.QueryService
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
