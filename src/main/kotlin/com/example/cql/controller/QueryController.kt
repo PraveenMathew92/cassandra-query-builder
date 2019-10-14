@@ -19,8 +19,9 @@ class QueryController (val queryService: QueryService) {
                 .map { "${it.getString("name")}\n" }
     }
 
-    @GetMapping("/name/{name}")
-    fun getName(@PathVariable name: String): Mono<String> {
+    @GetMapping("/name")
+    fun getName(): Mono<String> {
+        val name = "james; SELECT * FROM cql_injection.visitor"
         val result = queryService.getName(name)
         return  result.map { it.rows() }
                 .flatMapMany { it }
