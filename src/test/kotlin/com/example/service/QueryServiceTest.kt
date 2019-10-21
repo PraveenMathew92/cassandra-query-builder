@@ -15,6 +15,6 @@ class QueryServiceTest{
     fun `should call select all query form database`() {
         queryService.getAll()
 
-        verify(databaseClient, times(1)).selectAllQuery()
+        verify(databaseClient, times(1)).findAll()
     }
 }

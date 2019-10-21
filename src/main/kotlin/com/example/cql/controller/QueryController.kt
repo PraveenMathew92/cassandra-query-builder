@@ -14,17 +14,21 @@ class QueryController (val queryService: QueryService) {
     @GetMapping("/all")
     fun getAll(): Flux<String> {
         val result = queryService.getAll()
-        return  result.map { it.rows() }
-                .flatMapMany { it }
-                .map { "${it.getString("name")}\n" }
+        return  result.map { it.name }
     }
 
     @GetMapping("/name/{name}")
     fun getName(@PathVariable name: String): Mono<String> {
         val result = queryService.getName(name)
-        return  result.map { it.rows() }
-                .flatMapMany { it }
-                .next()
-                .map { "${it.getString("name")}\n" }
+        return result.next()
+                .map { it.name }
+    }
+
+    @GetMapping("/name/inject")
+    fun injectName(): Mono<String> {
+        val name = "jack; DROP TABLE visitor ;"
+        val result = queryService.getName(name)
+        return result.next()
+                .map { it.name }
     }
 }

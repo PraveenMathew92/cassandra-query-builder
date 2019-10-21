@@ -1,26 +1,13 @@
 package com.example.cql.repository
 
-import com.datastax.driver.core.RegularStatement
-import com.datastax.driver.core.querybuilder.Clause
-import com.datastax.driver.core.querybuilder.QueryBuilder
-import com.example.cql.CassandraConfig
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.cassandra.ReactiveResultSet
+import com.example.cql.model.Visitor
+import org.springframework.data.cassandra.repository.Query
+import org.springframework.data.cassandra.repository.ReactiveCassandraRepository
 import org.springframework.stereotype.Repository
-import reactor.core.publisher.Mono
+import reactor.core.publisher.Flux
 
 @Repository
-class DatabaseClient(@Autowired
-                     private val cassandraConfig: CassandraConfig) {
-    private val reactiveSession = cassandraConfig.reactiveSession()
-
-    fun selectAllQuery(): Mono<ReactiveResultSet> {
-        val statement: RegularStatement = QueryBuilder.select().all().from("visitor")
-        return reactiveSession.execute(statement)
-    }
-
-    fun selectName(name: String): Mono<ReactiveResultSet> {
-        val statement: RegularStatement = QueryBuilder.select().from("visitor").where(QueryBuilder.eq("name", name))
-        return reactiveSession.execute(statement)
-    }
+interface DatabaseClient : ReactiveCassandraRepository<Visitor, String>{
+    @Query("SELECT * FROM visitor WHERE name = ?0")
+    fun findByName(name: String): Flux<Visitor>
 }

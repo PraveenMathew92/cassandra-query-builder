@@ -1,23 +1,32 @@
 package com.example.cql
 
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.cassandra.config.AbstractReactiveCassandraConfiguration
 import org.springframework.data.cassandra.config.CassandraClusterFactoryBean
 import org.springframework.data.cassandra.config.SchemaAction
-import org.springframework.data.cassandra.repository.config.EnableCassandraRepositories
+import org.springframework.data.cassandra.core.cql.keyspace.CreateKeyspaceSpecification
+import org.springframework.data.cassandra.repository.config.EnableReactiveCassandraRepositories
 
 @Configuration
-@EnableCassandraRepositories
-class CassandraConfig : AbstractReactiveCassandraConfiguration() {
-    override fun getKeyspaceName() = "cql_injection"
+@EnableReactiveCassandraRepositories
+class ReactiveCassandraConfiguration : AbstractReactiveCassandraConfiguration() {
+    private val KEYSPACE_NAME = "cql_injection"
 
-    override fun getSchemaAction() = SchemaAction.CREATE_IF_NOT_EXISTS
+    override fun getKeyspaceName(): String = KEYSPACE_NAME
 
     override fun cluster(): CassandraClusterFactoryBean {
         val cluster = super.cluster()
-        cluster.setContactPoints("localhost")
-        cluster.setPort(9042)
         cluster.setJmxReportingEnabled(false)
         return cluster
     }
+
+    override fun getKeyspaceCreations(): MutableList<CreateKeyspaceSpecification> {
+        return mutableListOf(CreateKeyspaceSpecification
+                .createKeyspace(KEYSPACE_NAME)
+                .withSimpleReplication(1)
+                .ifNotExists())
+    }
+
+    override fun getSchemaAction() = SchemaAction.CREATE_IF_NOT_EXISTS
 }

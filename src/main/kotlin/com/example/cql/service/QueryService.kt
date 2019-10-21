@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class QueryService (val databaseClient: DatabaseClient) {
-    fun getAll() = databaseClient.selectAllQuery()
+    fun getAll() = databaseClient.findAll()
 
-    fun getName(name: String) = databaseClient.selectName(name)
+    fun getName(name: String) = databaseClient.findByName(name)
 }
